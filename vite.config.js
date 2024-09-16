@@ -11,5 +11,5 @@ export default defineConfig({
   },
   base: process.env.DEV
     ? "/"
-    : "https://jullirise.github.io/imgeditor/",
+    : "https://jullirise.github.io/img/",
 })

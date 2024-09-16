@@ -1,5 +1,5 @@
 {
-  "name": "imgeditor",
+  "name": "img",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -30,5 +30,5 @@
     "@vitejs/plugin-vue": "^5.0.4",
     "vite": "^5.2.0"
   },
-  "homepage": "https://jullirise.github.io/imgeditor"
+  "homepage": "https://jullirise.github.io/img"
 }
