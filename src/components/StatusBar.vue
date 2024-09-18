@@ -1,7 +1,16 @@
 <template>
   <div class="status-bar">
     <div class="scale-control">
-      <label for="scale" style="color: white;">Масштаб</label>
+      <label for="scale" style="color: white;" class="label-mas">Масштаб</label>
+
+      <!-- Выпадающий список с предустановленными значениями масштаба -->
+      <select v-model="selectedScale" @change="onScaleSelect" class="scale-dropdown">
+        <option v-for="scale in predefinedScales" :key="scale" :value="scale">
+          {{ scale }}%
+        </option>
+      </select>
+
+      <!-- Ползунок для задания масштаба -->
       <input
         type="range"
         class="scale"
@@ -13,19 +22,23 @@
         :value="scale"
         @input="updateScale"
       />
+      <!-- Отображение корректного масштаба в процентах -->
+      
     </div>
-    <div v-if="imgLoaded && imageWidth !== null && imageHeight !== null && imageWidth !== 300 && imageHeight !== 150"> <!-- Изменено условие отображения -->
+
+    <!-- Информация о ширине и высоте изображения -->
+    <div v-if="imgLoaded && imageWidth !== null && imageHeight !== null">
       Ширина: {{ imageWidth }} Высота: {{ imageHeight }}
     </div>
+
+    <!-- Информация о выбранном цвете и координатах (для пипетки) -->
     <div v-if="state === 'pipette' && pickedColor">
       Цвет: {{ pickedColor }}
     </div>
     <div
       v-if="state === 'pipette' && pickedColor"
       class="pipette-color"
-      :style="{
-        background: pickedColor,
-      }"
+      :style="{ background: pickedColor }"
     ></div>
     <div v-if="state === 'pipette' && pickedColor && xMouse !== null && yMouse !== null">
       Координаты: {{ xMouse }}:{{ yMouse }}
@@ -45,13 +58,38 @@ export default defineComponent({
     pickedColor: String,
     xMouse: Number,
     yMouse: Number,
-    scale: Number,
-    imgLoaded: Boolean, // Добавили этот параметр
+    scale: Number,        // Текущий масштаб
+    imgLoaded: Boolean,   // Флаг для проверки загрузки изображения
+    originalWidth: Number,  // Исходная ширина изображения
+    originalHeight: Number, // Исходная высота изображения
+  },
+  data() {
+    return {
+      selectedScale: this.scale, // Для хранения выбранного масштаба
+      predefinedScales: [12, 25, 50, 100, 150, 200, 300], // Предустановленные значения масштаба
+    };
+  },
+  computed: {
+    // Корректное вычисление масштаба в процентах относительно исходного размера изображения
+    correctScalePercentage() {
+      if (this.originalWidth && this.originalHeight && this.imageWidth && this.imageHeight) {
+        const widthPercentage = (this.imageWidth / this.originalWidth) * 100;
+        const heightPercentage = (this.imageHeight / this.originalHeight) * 100;
+        return Math.round((widthPercentage + heightPercentage) / 2);
+      }
+      return 100;
+    },
   },
   methods: {
+    // Метод для обновления масштаба при изменении ползунка
     updateScale(event) {
       const newScale = +event.target.value;
+      this.selectedScale = newScale; // Синхронизируем с выбранным масштабом
       this.$emit("updateScale", newScale);
+    },
+    // Метод для обновления масштаба при выборе в списке
+    onScaleSelect() {
+      this.$emit("updateScale", this.selectedScale);
     },
   },
 });
@@ -90,7 +128,13 @@ export default defineComponent({
   font-weight: bold;
 }
 
+.scale-dropdown {
+  margin-right: 10px;
+}
 
+.label-mas {
+  margin-right: 20px;
+}
 
 .scale {
   margin-right: 13px;

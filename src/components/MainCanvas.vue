@@ -128,39 +128,40 @@ export default defineComponent({
       img.src = this.newImg.src;
     },
     moveImage() {
-      const canvas = this.canvasRef;
-      if (this.offsetX + 10 > canvas.width) {
-        this.offsetX = canvas.width - 10;
-      }
-      if (this.offsetX + 10 > canvas.height) {
-        this.offsetY = canvas.height - 10;
-      }
-      if (this.offsetX + this.iw < 10) {
-        this.offsetX = -this.iw + 10;
-      }
-      if (this.offsetY + this.ih < 10) {
-        this.offsetY = -this.ih + 10;
-      }
+    const canvas = this.canvasRef;
+    const ctx = this.canvasRef?.getContext("2d");
 
-      const ctx = this.canvasRef?.getContext("2d");
-      const img = this.newImg ?? new Image();
-      img.onload = () => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        canvas.width = this.canvasRef.clientWidth;
-        canvas.height = this.canvasRef.clientHeight;
-        ctx.imageSmoothingEnabled = false;
-        ctx.drawImage(img, this.offsetX, this.offsetY, this.iw, this.ih);
-      };
-      img.src = this.newImg.src;
-    },
+    // Проверки выхода изображения за пределы canvas
+    if (this.offsetX + this.iw > canvas.width) {
+      this.offsetX = canvas.width - this.iw;
+    }
+    if (this.offsetY + this.ih > canvas.height) {
+      this.offsetY = canvas.height - this.ih;
+    }
+    if (this.offsetX < 0) {
+      this.offsetX = 0;
+    }
+    if (this.offsetY < 0) {
+      this.offsetY = 0;
+    }
+
+    const img = this.newImg ?? new Image();
+    img.onload = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(img, this.offsetX, this.offsetY, this.iw, this.ih); // Рисуем изображение на новом месте
+    };
+    img.src = this.newImg.src;
+},
+
     handleMouseDown(e) {
       this.isDragging = true;
       this.startX = e.clientX - this.offsetX;
       this.startY = e.clientY - this.offsetY;
 
       if (this.state == "pipette") {
-        this.$emit("updateColor", this.handleColorPick(e));
-        this.$emit("updateCoordinates", this.handleCoordinates(e));
+        this.$emit("updateColor", this.handleColorPick(e)); // Генерация события обновления цвета
+        this.$emit("updateCoordinates", this.handleCoordinates(e)); // Генерация события обновления координат
       }
     },
     handleMouseUp() {
@@ -281,26 +282,24 @@ export default defineComponent({
       return [~~xMouse, ~~yMouse];
     },
     saveImage() {
-      // Создание нового canvas элемента для сохранения изображения
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-      // Установка размеров canvas в соответствии с размерами изображения
-      canvas.width = this.iw;
-      canvas.height = this.ih;
-       // Отрисовка изображения на новом canvas
-      ctx.drawImage(this.newImg, 0, 0, this.iw, this.ih);
-       // Преобразование изображения в Data URL
-      const imageDataURL = canvas.toDataURL("image/png");
-       // Создание ссылки для скачивания
-      const link = document.createElement("a");
-      link.href = imageDataURL;
-      link.download = "my_image.png";
-      // Добавление ссылки в документ и эмуляция клика для скачивания
-      document.body.appendChild(link);
-      link.click();
-       // Удаление ссылки из документа
-      document.body.removeChild(link);
-    },
+  // Получаем текущий canvas с изменениями
+  const canvas = this.canvasRef;
+  
+  // Преобразование содержимого текущего canvas в Data URL
+  const imageDataURL = canvas.toDataURL("image/png");
+
+  // Создание ссылки для скачивания
+  const link = document.createElement("a");
+  link.href = imageDataURL;
+  link.download = "my_image.png";
+
+  // Добавление ссылки в документ и эмуляция клика для скачивания
+  document.body.appendChild(link);
+  link.click();
+
+  // Удаление ссылки из документа
+  document.body.removeChild(link);
+},
   },
   watch: {
     state(newVal) {
