@@ -99,7 +99,8 @@ export default defineComponent({
 .status-bar {
   position: absolute;
   bottom: 0;
-  width: calc(100% - 60px);
+  
+  width: calc(100% - 110px);
   height: 50px;
   background: linear-gradient(to right, #2414b5, #ececec,);
   display: flex;
