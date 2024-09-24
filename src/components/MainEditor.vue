@@ -74,14 +74,14 @@
             <img
               v-if="bind"
               class="checkbox-image"
-              src="../assets/lock.png"
-              alt="Lock"
+              src="../assets/unlock.png"
+              alt="Unlock"
             />
             <img
               v-else
               class="checkbox-image"
-              src="../assets/unlock.png"
-              alt="Unlock"
+              src="../assets/lock.png"
+              alt="Lock"
             />
           </div>
           <div class="input-with-prefix">

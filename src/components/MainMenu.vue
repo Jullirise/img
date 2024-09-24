@@ -196,11 +196,11 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   gap: 15px;
-  border-radius: 15px;
   align-items: center;
   justify-content: center;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  background: linear-gradient(to bottom, #cfe9f1, #2d1ad7);
+  // background: linear-gradient(to bottom, #cfe9f1, #2d1ad7);
+  background-color: #d1d6f7;
 }
 
 .url-input {

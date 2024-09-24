@@ -26,11 +26,6 @@
       
     </div>
 
-    <!-- Информация о ширине и высоте изображения -->
-    <div v-if="imgLoaded && imageWidth !== null && imageHeight !== null">
-      Ширина: {{ imageWidth }} Высота: {{ imageHeight }}
-    </div>
-
     <!-- Информация о выбранном цвете и координатах (для пипетки) -->
     <div v-if="state === 'pipette' && pickedColor">
       Цвет: {{ pickedColor }}
@@ -43,6 +38,12 @@
     <div v-if="state === 'pipette' && pickedColor && xMouse !== null && yMouse !== null">
       Координаты: {{ xMouse }}:{{ yMouse }}
     </div>
+
+    <!-- Информация о ширине и высоте изображения -->
+    <div v-if="imgLoaded && imageWidth !== null && imageHeight !== null">
+      Ширина: {{ imageWidth }} Высота: {{ imageHeight }}
+    </div>
+
   </div>
 </template>
 
@@ -99,17 +100,19 @@ export default defineComponent({
 .status-bar {
   position: absolute;
   bottom: 0;
-  
   width: calc(100% - 110px);
   height: 50px;
-  background: linear-gradient(to right, #2414b5, #ececec,);
+  // background: linear-gradient(to right, #2414b5, #ececec,);
+  background-color: #d1d6f7;
   display: flex;
   gap: 5px;
-  padding-left: 30px;
-  padding-top: 30px;
+  // padding-left: 30px;
+  // padding-top: 30px;
   justify-content: space-between;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  padding-bottom: 5px;
+  // padding-bottom: 5px;
+  padding: 15px 30px;
+  box-sizing: border-box;
 }
 
 .left-side {
@@ -117,11 +120,11 @@ export default defineComponent({
 }
 
 .pipette-color {
-  width: 50px;
-  height: 50px;
+  width:30px;
+  height: 30px;
   border-radius: 50%;
-  border: 2px solid #1e90ff;
-  margin-top: -15px;
+  border: 2px solid #cbdff4;
+  margin-top: -7px;
 }
 
 .scale-control label {
@@ -135,6 +138,7 @@ export default defineComponent({
 
 .label-mas {
   margin-right: 20px;
+  color: #1f2026;
 }
 
 .scale {

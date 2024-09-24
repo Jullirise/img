@@ -245,7 +245,8 @@ export default defineComponent({
   right: 20px;
   width: 250px;
   height: 230px;
-  background: linear-gradient(to top right, #121bd3, #ececec,);
+  // background: linear-gradient(to top right, #121bd3);
+  background-color: #c4c6ee;
   display: flex;
   flex-direction: column;
   gap: 5px;

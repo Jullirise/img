@@ -242,9 +242,10 @@ export default defineComponent({
   position: absolute;
   top: 40%;
   right: 20px;
-  width: 200px;
+  width: 250px;
   height: 160px;
-  background: linear-gradient(to top right, #6e0202, #ececec);
+  background-color: #d1d6f7;
+  // background: linear-gradient(to top right, #6e0202, #ececec);
   display: flex;
   flex-direction: column;
   padding: 10px;
